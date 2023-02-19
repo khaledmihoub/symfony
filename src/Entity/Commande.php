@@ -24,7 +24,7 @@ class Commande
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user_id = null;
+    private ?User $user_id = null;
 
     #[ORM\OneToMany(mappedBy: 'id_commande', targetEntity: LigneDeCommande::class, orphanRemoval: true)]
     private Collection $ligneDeCommandes;
@@ -101,7 +101,6 @@ class Commande
                 $ligneDeCommande->setIdCommande(null);
             }
         }
-
         return $this;
     }
 }

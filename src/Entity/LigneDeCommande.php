@@ -15,7 +15,7 @@ class LigneDeCommande
 
     #[ORM\ManyToOne(inversedBy: 'ligneDeCommandes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?produit $id_produit = null;
+    private ?Produit $id_produit = null;
 
     #[ORM\ManyToOne(inversedBy: 'ligneDeCommandes')]
     #[ORM\JoinColumn(nullable: false)]
