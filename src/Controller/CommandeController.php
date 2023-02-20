@@ -33,6 +33,9 @@ class CommandeController extends AbstractController
             if ($request->query->getBoolean('success')) {
                 $this->addFlash('success', 'Entity added successfully!');
             }
+            if ($request->query->getBoolean('successp')) {
+                $this->addFlash('successp', 'Entity added successfully!');
+            }
 
         return $this->render('front.html.twig', [
             'produits' => $produits,
@@ -43,23 +46,35 @@ class CommandeController extends AbstractController
     #[Route('/panier', name: 'my_route', methods: ['POST'])]
     public function index2(CommandeRepository $commandeRepository,Request $request,EntityManagerInterface $entityManager): Response
     { 
+        
         //get id produit from hidden form
         $idproduit = $request->request->get('myVariable');
-       
         //remplir la session par les id produit choisis 
         $session = new Session();
-
-
         //tableau rempli par les id_prod du panier
         $arr_panier = $session->get('panier') ;
-        array_push($arr_panier , $idproduit);
-        //mise a jour panier 
-        $session->set('panier',$arr_panier );
+    
+        $boolean= true ;
+        if (! empty($arr_panier)){
+                foreach ( $arr_panier as $i ){   
+                        if ($i == $idproduit){
+                            $boolean= false ;
+                        }
+                    };
+        }
+        if ($boolean){
+            array_push($arr_panier,$idproduit); 
+        } 
+        else  return $this->redirectToRoute('app_commande_index', ['successp' => true], Response::HTTP_SEE_OTHER);;
+            $session->set('panier',$arr_panier );
 
-
+            return $this->redirectToRoute('panier');;
+    }
+    #[Route('/panier', name: 'panier', methods: ['GET'])]
+    public function panier(CommandeRepository $commandeRepository,Request $request,EntityManagerInterface $entityManager): Response
+    {   
+        $session = new Session();
         $produits = array();
-       
-        //recuperer les produits a parir de la base de données 
         foreach ( $session->get('panier') as $i ){
                 $product =  $entityManager
                          ->getRepository(Produit::class)
@@ -78,10 +93,7 @@ class CommandeController extends AbstractController
     { 
         $session = new Session();
         $session->set('panier', []);
-       
-       
-        $produits = array();
-        
+        $produits = array(); 
         return $this->render('frontcart.html.twig', [
            'produits' => $produits,
         ]);
@@ -132,9 +144,7 @@ class CommandeController extends AbstractController
    
        $session = new Session();
        $session->set('panier', []);
-
-
-       return $this->redirectToRoute('app_commande_index', [   'success' => true], Response::HTTP_SEE_OTHER);
+       return $this->redirectToRoute('app_commande_index', ['success' => true], Response::HTTP_SEE_OTHER);
     }
 
 
