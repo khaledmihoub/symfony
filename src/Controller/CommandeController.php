@@ -163,10 +163,7 @@ class CommandeController extends AbstractController
 
                }
             }
-            
-          dd($total);
-
-
+        
         if ($p == 0) {     
              
             foreach ($table as $ligne) {
