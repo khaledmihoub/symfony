@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LigneDeCommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LigneDeCommandeRepository::class)]
 class LigneDeCommande
@@ -22,6 +23,12 @@ class LigneDeCommande
     private ?commande $id_commande = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        min: 1,
+        max: 10 ,
+        notInRangeMessage: 'You must be between {{ min }} and {{ max }}',
+    )]
+    #[Assert\NotBlank(message: 'This field should not be blank2')]
     private ?int $quantite ;
 
 

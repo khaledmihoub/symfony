@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 #[Route('/commande')]
 class CommandeController extends AbstractController
 {
@@ -81,7 +83,12 @@ class CommandeController extends AbstractController
                          ->find($i);     
              $produits[]= $product;
         }
-       
+        if ($request->query->getBoolean('successE')) {
+            $this->addFlash('successE', 'Entity added successfully!');
+        }
+        if ($request->query->getBoolean('successC')) {
+            $this->addFlash('successC', 'Entity added successfully!');
+        }
         return $this->render('frontcart.html.twig', [
            'produits' => $produits,
         ]);
@@ -100,7 +107,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/newcommande', name: 'submitcommande', methods: ['POST'])]
-    public function newcomande(CommandeRepository $commandeRepository,LigneDeCommandeRepository $commandeLRepository,Request $request,EntityManagerInterface $entityManager): Response
+    public function newcomande(ValidatorInterface $validator,CommandeRepository $commandeRepository,LigneDeCommandeRepository $commandeLRepository,Request $request,EntityManagerInterface $entityManager): Response
     {       
         //recuperer user statique son id 1 
         $user = $entityManager
@@ -123,28 +130,77 @@ class CommandeController extends AbstractController
         
         $table = array();
         $table[] = $request->request->get('table');
-        
-        for ($i = 0; $i < count($table); $i++) {
-           for ($j = 0; $j < count($table[$i]); $j++) {
-               $quantitie= intval($table[$i][$j]['quantity']);
-               $idp = intval($table[$i][$j]['idproduit']);
+
+
+    
+        $p = 0;
+        $total= 0 ; 
+        // count errors 
+        foreach ($table as $ligne) {
+            foreach ($ligne as $l) {
+               $quantitie= intval($l['quantity']);
+               $idp = intval($l['idproduit']);
 
                $produit = $entityManager
                ->getRepository(Produit::class)
                ->find($idp);
+
+                        $total= $total + $produit->getPrixTtc()* $quantitie;
+
+
 
                 $LC = new LigneDeCommande();
 
                 $LC->setIdCommande( $lastComm);
                 $LC->setIdProduit($produit);
                 $LC->setQuantite($quantitie);
-                $commandeLRepository->save($LC, true);
+                
+                $errors = $validator->validate($LC);
+              
+                if (count($errors) > 0) $p++; 
+
+             //   $commandeLRepository->save($LC, true);
+
                }
-       }
+            }
+            
+          dd($total);
+
+
+        if ($p == 0) {     
+             
+            foreach ($table as $ligne) {
+                foreach ($ligne as $l) {
+                   $quantitie= intval($l['quantity']);
+                   $idp = intval($l['idproduit']);
+    
+                   $produit = $entityManager
+                   ->getRepository(Produit::class)
+                   ->find($idp);
+    
+                    $LC = new LigneDeCommande();
+    
+                    $LC->setIdCommande( $lastComm);
+                    $LC->setIdProduit($produit);
+                    $LC->setQuantite($quantitie);
+                
+                    $commandeLRepository->save($LC, true);
+    
+                   }
+                }
+
+                $session = new Session();
+                $session->set('panier', []); 
+                return $this->redirectToRoute('panier', ['successC' => true], Response::HTTP_SEE_OTHER);
+               
+ 
+            }else 
+            return $this->redirectToRoute('panier', ['successE' => true], Response::HTTP_SEE_OTHER);
+            
+           
+    
    
-       $session = new Session();
-       $session->set('panier', []);
-       return $this->redirectToRoute('app_commande_index', ['success' => true], Response::HTTP_SEE_OTHER);
+      
     }
 
 

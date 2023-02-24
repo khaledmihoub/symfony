@@ -167,6 +167,39 @@
                                 <th scope="col">Total</th>
                             </tr>
                         </thead>
+					
+						{% if app.flashes('successE') %}
+											<div class='container'>
+													<div id="success-alert" class="alert alert-danger">
+														Desolé la quantité ne doit pas depasser 10 
+																	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+													</div>
+																
+											</div>
+												<script>
+													setTimeout(function() {
+														$('#success-alert').fadeOut('slow');
+													}, 10000); // 10 seconds
+												</script>
+						{% endif %}
+						{% if app.flashes('successC') %}
+											<div class='container'>
+													<div id="success-alert" class="alert alert-success">
+														Votre commande est en cours de traitement 
+																	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+													</div>
+																
+											</div>
+												<script>
+													setTimeout(function() {
+														$('#success-alert').fadeOut('slow');
+													}, 10000); // 10 seconds
+												</script>
+						{% endif %}
                         <tbody>
 							
 							{% if produits is not empty %}
@@ -182,21 +215,17 @@
 												</div>
 											</div>
 										</td>
-										<td>
-											<h5>{{produit.prixTtc}} DT</h5>
+										<td class="product_price">
+											<h5>{{produit.prixTtc}} </h5>
 										</td>
 										<td>
 											<div class="product_count">
 											<form id="myForm" action="{{ path('submitcommande') }}" method="POST">
-											{#	<input type="hidden" id="myHiddenInput" name="idproduit" value={{produit.id}}>
-												<input type="number" id="quantity" name="quantity" min="1" max="5">  #}
-												<input type="hidden" name="table[{{ loop.index0 }}][idproduit]" value="{{produit.id }}">
-                  								  <input type="number" name="table[{{ loop.index0 }}][quantity]" >
+												  <input type="hidden" name="table[{{ loop.index0 }}][idproduit]" value="{{produit.id }}">
+                  								  <input type="number" name="table[{{ loop.index0 }}][quantity]" class="quantity_input" required>
 											</div>
 										</td>
-										<td>
-											<h5>{{produit.prixTtc}} DT</h5>
-										</td>
+										 <td class="subtotal"></td>
 									</tr>
 									{% endfor %}
 											<button type="submit" class="btn btn-success">Confirmer la commande</button>
@@ -215,8 +244,8 @@
                                 <td>
                                     <h5>Subtotal</h5>
                                 </td>
-                                <td>
-                                    <h5>$2160.00</h5>
+                                <td id="total">
+                                    <h5>  </h5>
                                 </td>
                             </tr>
 							<!--
@@ -371,5 +400,24 @@
 </footer>
 </body>
     <script src="{{asset('js/vendor/jquery-2.2.4.min.js')}}"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script><script src="{{asset('js/vendor/bootstrap.min.js')}}"></script><script src="{{asset('js/jquery.ajaxchimp.min.js')}}"></script><script src="{{asset('js/jquery.nice-select.min.js')}}"></script><script src="{{asset('js/jquery.sticky.js')}}"></script><script src="{{asset('js/nouislider.min.js')}}"></script><script src="{{asset('js/countdown.js')}}"></script><script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script><script src="{{asset('js/owl.carousel.min.js')}}"></script><!--gmaps Js--><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script><script src="{{asset('js/gmaps.min.js')}}"></script><script src="{{asset('js/main.js')}}"></script>
-
+<script>
+  const quantityInputs = document.querySelectorAll('.quantity_input');
+  const subtotalCells = document.querySelectorAll('.subtotal');
+  const totalCell = document.querySelector('#total');
+  
+  quantityInputs.forEach((input, index) => {
+    input.addEventListener('change', () => {
+      const quantity = parseInt(input.value);
+      const price = parseFloat(input.closest('tr').querySelector('.product_price').textContent);
+      const subtotal = quantity * price;
+      subtotalCells[index].textContent = subtotal.toFixed(2);
+      
+      let total = 0;
+      subtotalCells.forEach(cell => {
+        total += parseFloat(cell.textContent);
+      });
+      totalCell.textContent = total.toFixed(3) + "  TND";
+    });
+  });
+</script>
 </html>
