@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Facture</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+       
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .total span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+      <img src="https://i.ibb.co/z6zyTw5/apple-touch-icon.png" alt="apple-touch-icon" border="0">
+        <div class="info">
+            <h2>Sportsvere</h2>
+            <p>10 rue utique, Elghazala,Ariana</p>
+            <p>Téléphone : 99944560 </p>
+            <p>Email : info@Sportsvere.com</p>
+        </div>
+        Paiement à la livraison 
+    </header>
+    <main>
+    
+    
+
+   <br> <br> <br>
+        <h1>Facture #{{ lcommandes[0].idCommande.id }}</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if lcommandes is not empty %}
+				{% for lc in lcommandes %}
+                                    <tr>
+                                        <td>{{lc.idProduit.nomProduit}}</td>
+                                        <td>{{lc.idProduit.prixTtc}}</td>
+                                        <td>{{lc.quantite}}</td>
+                                         <td>{{lc.quantite * lc.idProduit.prixTtc}}</td>
+                                    </tr>
+                {% endfor %}
+            {% endif %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td> 
+                        <strong>Livraison :
+                        </strong>
+                    </td>
+                    <td>
+                        7 TND
+                    </td>
+                </tr>
+                  
+            </tbody>
+        </table>
+        <div class="total">
+            <span>Total :</span> {{total}} TND
+        </div>
+    </main>
+</body>
+</html>

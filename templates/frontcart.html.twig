@@ -235,8 +235,10 @@
 								Panier est vide
 							{% endif %}                     
                             <tr>
+							
+							
                                 <td>
-   									<a class="gray_btn" href="{{ path('viderpanier') }} ">Vider panier</a>
+   									<a class="btn" href="{{ path('viderpanier') }} ">Vider le panier</a>
                                 </td>
                                 <td>
 
@@ -285,15 +287,24 @@
 									</tr>
 							-->
                             <tr class="out_button_area">
+							
                                 <td>
 
+								
+                                    <div class="">
+                                      <a class="gray_btn" href="{{ path('affc') }} ">Consulter Mes commandes</a>
+                                    </div>
+                                
+										
+						
                                 </td>
                                 <td>
 
                                 </td>
-                                <td>
+                                 <td>
 
                                 </td>
+								
                                 <td>
                                     <div class="checkout_btn_inner d-flex align-items-center">
                                         <a class="gray_btn" href="{{ path('app_commande_index') }} ">Continuer mes achats</a>

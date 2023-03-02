@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+		<!-- Mobile Specific Meta -->
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Favicon-->
+		<link
+		rel="shortcut icon" href="{{asset('img/sportsverse.png')}}">
+		<!-- Author Meta -->
+		<meta
+		name="author" content="CodePixar">
+		<!-- Meta Description -->
+		<meta
+		name="description" content="">
+		<!-- Meta Keyword -->
+		<meta
+		name="keywords" content="">
+		<!-- meta character set -->
+		<meta
+		charset="UTF-8">
+		<!-- Site Title -->
+		<title>SportsVerse</title>
+		<!--
+						CSS
+						============================================= -->
+						<link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+		<link rel="stylesheet" href="{{asset('css/linearicons.css')}}">
+		<link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">
+		<link rel="stylesheet" href="{{asset('css/themify-icons.css')}}">
+		<link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
+		<link rel="stylesheet" href="{{asset('css/owl.carousel.css')}}">
+		<link rel="stylesheet" href="{{asset('css/nice-select.css')}}">
+		<link rel="stylesheet" href="{{asset('css/nouislider.min.css')}}">
+		<link rel="stylesheet" href="{{asset('css/ion.rangeSlider.css')}}"/>
+		<link rel="stylesheet" href="{{asset('css/ion.rangeSlider.skinFlat.css')}}"/>
+		<link rel="stylesheet" href="{{asset('css/magnific-popup.css')}}">
+		<link rel="stylesheet" href="{{asset('css/main.css')}}">
+		<link rel="stylesheet" href="{{asset('scss/style.scss')}}">
+		<style>
+				.button {
+					--background: #1a1c27;
+					--background-hover: #292c3b;
+					--background-progress: #999eb4;
+					--background-progress-active: #275efe;
+					--background-progress-success: #292c3b;
+					--text: #fff;
+					--success-text: #292c3b;
+					display: flex;
+					align-items: center;
+					outline: none;
+					cursor: pointer;
+					position: relative;
+					border: 0;
+					padding: 0;
+					line-height: 21px;
+					font-family: inherit;
+					font-weight: 600;
+					font-size: 14px;
+					background: none;
+					color: var(--text);
+					-webkit-tap-highlight-color: transparent;
+					-webkit-appearance: none;
+					--letters-y: 0px;
+					--letters-r: 0deg;
+					--letters-o: 1;
+					--progress-opacity: 0;
+					--background-opacity: 1;
+					--progress: 157;
+					--progress-y: 0.5px;
+					--progress-sx: 1;
+					--progress-sy: 1;
+					--success-opacity: 0;
+				}
+				.button:hover {
+					--fill: var(--background-hover);
+				}
+				.button.active {
+					--fill: var(--background-progress);
+					--fill-delay: 0.2s;
+					--fill-duration: 0.4s;
+				}
+				.button.success {
+					--success-background: var(--background-progress-success);
+				}
+				.button svg {
+					display: block;
+					position: absolute;
+					width: 100%;
+					left: 0;
+					right: 0;
+				}
+				.button svg.background {
+					height: 45px;
+					top: 0;
+					opacity: var(--background-opacity);
+					fill: var(--fill, var(--background));
+					transition: fill var(--fill-duration, 0.2s) linear var(--fill-delay, 0s);
+				}
+				.button svg.progress {
+					height: 32px;
+					bottom: -13px;
+					stroke: var(--background-progress);
+					fill: none;
+					stroke-width: 7;
+					stroke-linecap: round;
+					pointer-events: none;
+					opacity: var(--progress-opacity);
+					transform: translateY(var(--progress-y)) scale(var(--progress-sx), var(--progress-sy)) translateZ(0);
+				}
+				.button svg.progress path:last-child {
+					stroke-dasharray: 157;
+					stroke-dashoffset: var(--progress);
+					stroke: var(--success-background, var(--background-progress-active));
+					transition: stroke 0.2s linear;
+				}
+				.button .label,
+				.button .success {
+					z-index: 1;
+				}
+				.button .label {
+					position: relative;
+					display: flex;
+					padding: 12px 40px;
+					opacity: var(--letters-o);
+				}
+				.button .label span {
+					display: block;
+					transform: translateY(calc(var(--letters-y) * var(--move))) translateZ(0) rotate(calc(var(--letters-r) * var(--rotate) * var(--part)));
+				}
+				.button .success {
+					position: absolute;
+					left: 0;
+					right: 0;
+					top: 12px;
+					color: var(--success-text);
+					opacity: var(--success-opacity);
+				}
+						
+		</style>
+		<style>
+				.button2 {
+					--background: white;
+					--background-hover: #E1E1E1;
+					--background-progress: #999eb4;
+					--background-progress-active: #9E0000;
+					--background-progress-success: #9E0000;
+					--text: #fff;
+					--success-text: #9E0000;
+					display: flex;
+					align-items: center;
+					outline: none;
+					cursor: pointer;
+					position: relative;
+					border: 0;
+					padding: 0;
+					line-height: 21px;
+					font-family: inherit;
+					font-weight: 600;
+					font-size: 14px;
+					background: none;
+					color: var(--text);
+					-webkit-tap-highlight-color: transparent;
+					-webkit-appearance: none;
+					--letters-y: 0px;
+					--letters-r: 0deg;
+					--letters-o: 1;
+					--progress-opacity: 0;
+					--background-opacity: 1;
+					--progress: 157;
+					--progress-y: 0.5px;
+					--progress-sx: 1;
+					--progress-sy: 1;
+					--success-opacity: 0;
+				}
+				.button2:hover {
+					--fill: var(--background-hover);
+				}
+				.button2.active {
+					--fill: var(--background-progress);
+					--fill-delay: 0.2s;
+					--fill-duration: 0.4s;
+				}
+				.button2.success {
+					--success-background: var(--background-progress-success);
+				}
+				.button2 svg {
+					display: block;
+					position: absolute;
+					width: 100%;
+					left: 0;
+					right: 0;
+				}
+				.button2 svg.background {
+					height: 45px;
+					top: 0;
+					opacity: var(--background-opacity);
+					fill: var(--fill, var(--background));
+					transition: fill var(--fill-duration, 0.2s) linear var(--fill-delay, 0s);
+				}
+				.button2 svg.progress {
+					height: 32px;
+					bottom: -13px;
+					stroke: var(--background-progress);
+					fill: none;
+					stroke-width: 7;
+					stroke-linecap: round;
+					pointer-events: none;
+					opacity: var(--progress-opacity);
+					transform: translateY(var(--progress-y)) scale(var(--progress-sx), var(--progress-sy)) translateZ(0);
+				}
+				.button2 svg.progress path:last-child {
+					stroke-dasharray: 157;
+					stroke-dashoffset: var(--progress);
+					stroke: var(--success-background, var(--background-progress-active));
+					transition: stroke 0.2s linear;
+				}
+				.button2 .label,
+				.button2 .success {
+					z-index: 1;
+				}
+				.button2 .label {
+					position: relative;
+					display: flex;
+					padding: 12px 40px;
+					opacity: var(--letters-o);
+				}
+				.button2 .label span {
+					display: block;
+					transform: translateY(calc(var(--letters-y) * var(--move))) translateZ(0) rotate(calc(var(--letters-r) * var(--rotate) * var(--part)));
+				}
+				.button2 .success {
+					position: absolute;
+					left: 0;
+					right: 0;
+					top: 12px;
+					color: var(--success-text);
+					opacity: var(--success-opacity);
+				}
+						
+		</style>
+	</head>
+
+<body>
+
+   <!-- Start Header Area -->
+		<header class="header_area sticky-header">
+			<div class="main_menu">
+				<nav class="navbar navbar-expand-lg navbar-light main_box">
+					<div
+						class="container">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<a class="navbar-brand logo_h" href="index.html"><img src="{{asset('img/SportsVerse.png')}}" alt="">Sportsverse</a>
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+							<ul class="nav navbar-nav menu_nav ml-auto">
+								<li class="nav-item active">
+									<a class="nav-link" href="index.html">Accueil</a>
+								</li>
+								<li class="nav-item submenu dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
+									<ul class="dropdown-menu">
+										<li class="nav-item">
+											<a class="nav-link" href="category.html">Fitness</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="single-product.html">Musculation</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="checkout.html">Boxe</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="cart.html">Panier</a>
+										</li>
+									</ul>
+								</li>
+								<li class="nav-item submenu dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Coaching</a>
+									<ul class="dropdown-menu">
+										<li class="nav-item">
+											
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="single-blog.html">Suivi Seance</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="blog.html">Approuver Seance</a>
+										</li>
+									</ul>
+								</li>
+								<li class="nav-item submenu dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compte</a>
+									<ul class="dropdown-menu">
+										<li class="nav-item">
+											<a class="nav-link" href="login.html">Se Connecter</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="tracking.html">inscrire</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="elements.html">Elements</a>
+										</li>
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="contact.html">Contact</a>
+								</li>
+								<ul class="dropdown-menu">
+									<li class="nav-item">
+										<a class="nav-link" href="category.html">Réclamer</a>
+									</li>
+								</ul>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li class="nav-item">
+									<button class="search">
+										<span class="lnr lnr-magnifier" id="search"><img src="{{asset('img/social/rsz_1search')}}" alt=""></span>
+									</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="search_input" id="search_input_box">
+				<div class="container">
+					<form class="d-flex justify-content-between">
+						<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+						<button type="submit" class="btn"></button>
+						<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+					</form>
+				</div>
+			</div>
+		</header>
+		<!-- End Header Area -->
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Shopping Cart</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="category.html">Cart</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Cart Area =================-->
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+							
+                                <th scope="col">Commande</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Etat commande</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+					
+						
+                        <tbody>
+							
+							{% if commandes is not empty %}
+								{% for com in commandes %}
+									<tr>
+										<td>
+											<div class="media">
+												<div class="d-flex">
+													
+												</div>
+												<div class="media-body">
+													<p>{{com.id}}</p>
+												</div>
+											</div>
+										</td>
+										<td class="product_price">
+												{% set today = date() %}
+													<h5>{{com.date|date("m/d/Y  H:i")  }} </h5>
+													{% set diff = today.diff(com.date).days %}
+												
+									
+										</td>
+										<td>
+											<p>
+												{{com.etat.value}}
+											</p>
+										</td>
+										<td>
+											
+											{% if diff < 1 and com.etat.value == "ENCOURS" %}
+													
+													<button class="button2"  onclick="location.href='{{ path('annule', {id: com.id}) }}'" >
+															<svg class="background" style=" background: white; " preserveAspectRatio="none" viewBox="0 0 164 45">
+																<path d="M0 3C0 1.34315 1.33152 0 2.98838 0C15.6933 0 52.8204 0 82 0C111.114 0 148.441 0 161.007 0C162.664 0 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z" />
+															</svg>
+															<div class="label" style="color: #9E0000;">Annuler commande</div>
+															<div class="success">Commande annulé</div>
+															<svg class="progress" viewBox="0 0 164 32"></svg>
+													</button>
+											{% endif %} <br>
+												
+											<button class="button" onclick="location.href='{{ path('pdf', {id: com.id}) }}'">
+											<svg class="background" preserveAspectRatio="none" viewBox="0 0 164 45">
+												<path d="M0 3C0 1.34315 1.33152 0 2.98838 0C15.6933 0 52.8204 0 82 0C111.114 0 148.441 0 161.007 0C162.664 0 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z" />
+											</svg>
+											<div class="label">Imprimer Facture</div>
+											<div class="success">C fait ...</div>
+											<svg class="progress" viewBox="0 0 164 32"></svg>
+										</button>
+										</td>
+										 <td class="subtotal">
+										 </td>
+									</tr>
+								{% endfor %}
+											
+									
+							{% else %}
+								Vous n'avez aucune commande
+							{% endif %}                     
+                            <tr>
+							
+							
+                                <td>
+   									<a class="gray_btn" href="{{ path('panier') }} ">Voir panier</a>
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    
+                                </td>
+                                <td id="total">
+                                    <h5>  </h5>
+                                </td>
+                            </tr>
+							<!--
+									<tr class="shipping_area">
+										<td>
+
+										</td>
+										<td>
+
+										</td>
+										<td>
+											<h5>Shipping</h5>
+										</td>
+										<td>
+											<div class="shipping_box">
+												<ul class="list">
+													<li><a href="#">Flat Rate: $5.00</a></li>
+													<li><a href="#">Free Shipping</a></li>
+													<li><a href="#">Flat Rate: $10.00</a></li>
+													<li class="active"><a href="#">Local Delivery: $2.00</a></li>
+												</ul>
+												<h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>
+												<select class="shipping_select">
+													<option value="1">Bangladesh</option>
+													<option value="2">India</option>
+													<option value="4">Pakistan</option>
+												</select>
+												<select class="shipping_select">
+													<option value="1">Select a State</option>
+													<option value="2">Select a State</option>
+													<option value="4">Select a State</option>
+												</select>
+												<input type="text" placeholder="Postcode/Zipcode">
+												<a class="gray_btn" href="#">Update Details</a>
+											</div>
+										</td>
+									</tr>
+							-->
+                            <tr class="out_button_area">
+							
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                 <td>
+                                </td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="{{ path('app_commande_index') }} ">Continuer mes achats</a>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+
+    <!-- start footer Area -->
+			<footer class="footer-area section_gap"> <div class="container">
+				<div class="row">
+					<div class="col-lg-3  col-md-6 col-sm-6">
+						<div class="single-footer-widget">
+							<h6>About Us</h6>
+							<p>
+								SPORTSVERSE est dédiés
+																aux 					sportifs et à tous ceux qui sont
+																						intéressés par les équipements sportifs pour
+																						les faciliter tout type de shopping ou
+																						coaching privée
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-4  col-md-6 col-sm-6">
+						<div class="single-footer-widget">
+							<h6>Newsletter</h6>
+							<p>Stay update with our latest</p>
+							<div class="" id="mc_embed_signup">
+
+								<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
+
+									<div class="d-flex flex-row">
+
+										<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
+
+
+										<button class="click-btn btn btn-default">
+											<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+										</button>
+										<div style="position: absolute; left: -5000px;">
+											<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+										</div>
+
+										<!-- <div class="col-lg-4 col-md-4">
+																																<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+																															</div>  -->
+									</div>
+									<div class="info"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3  col-md-6 col-sm-6">
+						<div class="single-footer-widget mail-chimp">
+							<h6 class="mb-20">Instragram Feed</h6>
+							<ul class="instafeed d-flex flex-wrap">
+								    <li><img src="{{asset('img/I1.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I2.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I3.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I4.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I5.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I6.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I7.jpg')}}" alt=""></li>
+									<li><img src="{{asset('img/I8.jpg')}}" alt=""></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-6 col-sm-6">
+						<div class="single-footer-widget">
+							<h6>Follow Us</h6>
+							<p>Nos réseaux sociaux</p>
+							<div class="footer-social d-flex align-items-center">
+								<a href="#"><img src="{{asset('img/social/rsz_facebook.png')}}" alt=""></i>
+							</a>
+							<a href="#"><img src="{{asset('img/social/rsz_twitter.png')}}" alt=""></i>
+						</a>
+						<a href="#"><img src="{{asset('img/social/rsz_instagram.png')}}" alt=""></i>
+					</a>
+					<a href="#"><img src="{{asset('img/social/rsz_gmail.png')}}" alt=""></a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+</div>
+<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+<p
+	class="footer-text m-0">
+	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+	Copyright &copy;<script>
+		document.write(new Date().getFullYear());
+	</script>
+	SportsVerse
+	<a href="https://colorlib.com" target="_blank"></a>
+	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+</p></div></div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.4/gsap.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin3.min.js"></script>
+    <script src="{{asset('js/vendor/jquery-2.2.4.min.js')}}"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script><script src="{{asset('js/vendor/bootstrap.min.js')}}"></script><script src="{{asset('js/jquery.ajaxchimp.min.js')}}"></script><script src="{{asset('js/jquery.nice-select.min.js')}}"></script><script src="{{asset('js/jquery.sticky.js')}}"></script><script src="{{asset('js/nouislider.min.js')}}"></script><script src="{{asset('js/countdown.js')}}"></script><script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script><script src="{{asset('js/owl.carousel.min.js')}}"></script><!--gmaps Js--><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script><script src="{{asset('js/gmaps.min.js')}}"></script><script src="{{asset('js/main.js')}}"></script>
+<script>
+  gsap.registerPlugin(MorphSVGPlugin)
+
+		document.querySelectorAll('.button').forEach(button => {
+
+			let label = button.querySelector('.label'),
+				path = button.querySelector('.background path'),
+				svgProgress = button.querySelector('.progress'),
+				letters = label.textContent.trim().split(''),
+				pathProgress = new Proxy({
+					y: null
+				}, {
+					set(target, key, value) {
+						target[key] = value
+						if(target.y !== null) {
+							svgProgress.innerHTML = getPath(target.y, .3)
+						}
+						return true
+					},
+					get(target, key) {
+						return target[key]
+					}
+				})
+
+			pathProgress.y = 16
+
+			label.innerHTML = ''
+
+			function elements(letter, index, array) {
+
+				let element = document.createElement('span'),
+					part = (index >= array.length / 2) ? -1 : 1,
+					position = (index >= array.length / 2) ? array.length / 2 - index + (array.length / 2 - 1) : index,
+					move = position / (array.length / 2),
+					rotate = 1 - move
+
+				element.innerHTML = !letter.trim() ? '&nbsp;' : letter
+				element.style.setProperty('--move', move)
+				element.style.setProperty('--rotate', rotate)
+				element.style.setProperty('--part', part)
+
+				label.appendChild(element)
+
+			}
+
+			letters.forEach(elements);
+
+			button.addEventListener('mouseenter', e => {
+				if(button.classList.contains('active')) {
+					return
+				}
+				gsap.to(path, {
+					duration: .15,
+					morphSVG: 'M0 3C0 1.34315 1.33159 0.0090786 2.98745 0.0667219C15.6914 0.508972 52.8196 3 82 3C111.115 3 148.443 0.520171 161.009 0.0697387C162.664 0.010385 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z'
+				})
+				gsap.to(button, {
+					duration: .15,
+					'--letters-y': '2px',
+					'--letters-r': '8deg'
+				})
+			})
+
+			button.addEventListener('mouseleave', e => {
+				if(button.classList.contains('active')) {
+					return
+				}
+				gsap.to(path, {
+					duration: .15,
+					morphSVG: 'M0 3C0 1.34315 1.33152 0 2.98838 0C15.6933 0 52.8204 0 82 0C111.114 0 148.441 0 161.007 0C162.664 0 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z'
+				})
+				gsap.to(button, {
+					duration: .15,
+					'--letters-y': '0px',
+					'--letters-r': '0deg'
+				})
+			})
+
+			button.addEventListener('click', e => {
+				if(button.classList.contains('active')) {
+					return
+				}
+				button.classList.add('active')
+				gsap.to(button, {
+					'--letters-o': 0,
+					'--letters-y': '8px',
+					'--letters-r': '12deg',
+					duration: .2
+				})
+				gsap.to(path, {
+					keyframes: [{
+						morphSVG: 'M0 3C0 1.34315 1.33326 0.0498162 2.96247 0.351221C15.6427 2.69708 52.8005 16 82 16C111.136 16 148.496 2.75523 161.036 0.366778C162.663 0.0567542 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z',
+						duration: .2,
+						ease: 'none'
+					}, {
+						morphSVG: 'M0 42C0 40.3431 1.33152 39 2.98838 39C15.6933 39 52.8204 39 82 39C111.114 39 148.441 39 161.007 39C162.664 39 164 40.3431 164 42V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V42Z',
+						duration: .4,
+						ease: 'elastic.out(1, .9)',
+						onComplete() {
+							gsap.set(button, {
+								'--background-opacity': 0,
+								'--progress-opacity': 1
+							})
+							gsap.to(button, {
+								'--progress': 0,
+								duration: 3,
+								onComplete() {
+									button.classList.add('success')
+									gsap.to(pathProgress, {
+										keyframes: [{
+											duration: .2,
+											y: 10
+										}, {
+											duration: .6,
+											ease: 'elastic.out(1, .5)',
+											y: 16
+										}]
+									})
+									gsap.to(button, {
+										'--progress-y': '-8px',
+										'--progress-sx': .42,
+										'--progress-sy': .35,
+										'--success-opacity': 1,
+										duration: .2,
+										delay: .1,
+										onComplete() {
+											button.addEventListener('click', e => {
+												window.open('https://twitter.com/aaroniker_me', '_blank')
+											})
+										}
+									})
+								}
+							})
+						}
+					}]
+				})
+			})
+
+		})
+
+		function getPoint(point, i, a, smoothing) {
+			let cp = (current, previous, next, reverse) => {
+					let p = previous || current,
+						n = next || current,
+						o = {
+							length: Math.sqrt(Math.pow(n[0] - p[0], 2) + Math.pow(n[1] - p[1], 2)),
+							angle: Math.atan2(n[1] - p[1], n[0] - p[0])
+						},
+						angle = o.angle + (reverse ? Math.PI : 0),
+						length = o.length * smoothing;
+					return [current[0] + Math.cos(angle) * length, current[1] + Math.sin(angle) * length];
+				},
+				cps = cp(a[i - 1], a[i - 2], point, false),
+				cpe = cp(point, a[i - 1], a[i + 1], true);
+			return `C ${cps[0]},${cps[1]} ${cpe[0]},${cpe[1]} ${point[0]},${point[1]}`;
+		}
+
+		function getPath(update, smoothing) {
+			let points = [
+					[3.5, 16],
+					[82, update],
+					[160.5, 16]
+				],
+				d = points.reduce((acc, point, i, a) => i === 0 ? `M ${point[0]},${point[1]}` : `${acc} ${getPoint(point, i, a, smoothing)}`, '');
+			return `<path d="${d}" /><path d="${d}" />`;
+		}
+
+</script>
+
+
+<script>
+  gsap.registerPlugin(MorphSVGPlugin)
+
+	document.querySelectorAll('.button2').forEach(button2 => {
+
+		let label = button2.querySelector('.label'),
+			path = button2.querySelector('.background path'),
+			svgProgress = button2.querySelector('.progress'),
+			letters = label.textContent.trim().split(''),
+			pathProgress = new Proxy({
+				y: null
+			}, {
+				set(target, key, value) {
+					target[key] = value
+					if(target.y !== null) {
+						svgProgress.innerHTML = getPath(target.y, .3)
+					}
+					return true
+				},
+				get(target, key) {
+					return target[key]
+				}
+			})
+
+		pathProgress.y = 16
+
+		label.innerHTML = ''
+
+		function elements(letter, index, array) {
+
+			let element = document.createElement('span'),
+				part = (index >= array.length / 2) ? -1 : 1,
+				position = (index >= array.length / 2) ? array.length / 2 - index + (array.length / 2 - 1) : index,
+				move = position / (array.length / 2),
+				rotate = 1 - move
+
+			element.innerHTML = !letter.trim() ? '&nbsp;' : letter
+			element.style.setProperty('--move', move)
+			element.style.setProperty('--rotate', rotate)
+			element.style.setProperty('--part', part)
+
+			label.appendChild(element)
+
+		}
+
+		letters.forEach(elements);
+
+		button2.addEventListener('mouseenter', e => {
+			if(button2.classList.contains('active')) {
+				return
+			}
+			gsap.to(path, {
+				duration: .15,
+				morphSVG: 'M0 3C0 1.34315 1.33159 0.0090786 2.98745 0.0667219C15.6914 0.508972 52.8196 3 82 3C111.115 3 148.443 0.520171 161.009 0.0697387C162.664 0.010385 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z'
+			})
+			gsap.to(button2, {
+				duration: .15,
+				'--letters-y': '2px',
+				'--letters-r': '8deg'
+			})
+		})
+
+		button2.addEventListener('mouseleave', e => {
+			if(button2.classList.contains('active')) {
+				return
+			}
+			gsap.to(path, {
+				duration: .15,
+				morphSVG: 'M0 3C0 1.34315 1.33152 0 2.98838 0C15.6933 0 52.8204 0 82 0C111.114 0 148.441 0 161.007 0C162.664 0 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z'
+			})
+			gsap.to(button2, {
+				duration: .15,
+				'--letters-y': '0px',
+				'--letters-r': '0deg'
+			})
+		})
+
+		button2.addEventListener('click', e => {
+			if(button2.classList.contains('active')) {
+				return
+			}
+			button2.classList.add('active')
+			gsap.to(button2, {
+				'--letters-o': 0,
+				'--letters-y': '8px',
+				'--letters-r': '12deg',
+				duration: .2
+			})
+			gsap.to(path, {
+				keyframes: [{
+					morphSVG: 'M0 3C0 1.34315 1.33326 0.0498162 2.96247 0.351221C15.6427 2.69708 52.8005 16 82 16C111.136 16 148.496 2.75523 161.036 0.366778C162.663 0.0567542 164 1.34315 164 3V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V3Z',
+					duration: .2,
+					ease: 'none'
+				}, {
+					morphSVG: 'M0 42C0 40.3431 1.33152 39 2.98838 39C15.6933 39 52.8204 39 82 39C111.114 39 148.441 39 161.007 39C162.664 39 164 40.3431 164 42V42C164 43.6569 162.657 45 161 45H3C1.34314 45 0 43.6569 0 42V42Z',
+					duration: .4,
+					ease: 'elastic.out(1, .9)',
+					onComplete() {
+						gsap.set(button2, {
+							'--background-opacity': 0,
+							'--progress-opacity': 1
+						})
+						gsap.to(button2, {
+							'--progress': 0,
+							duration: 3,
+							onComplete() {
+								
+								button2.classList.add('success')
+								gsap.to(pathProgress, {
+									keyframes: [{
+										duration: .2,
+										y: 10
+									}, {
+										duration: .6,
+										ease: 'elastic.out(1, .5)',
+										y: 16
+									}]
+								})
+								gsap.to(button2, {
+									'--progress-y': '-8px',
+									'--progress-sx': .42,
+									'--progress-sy': .35,
+									'--success-opacity': 1,
+									duration: .2,
+									delay: .1,
+									onComplete() {
+									location.reload();
+									}
+								})
+							}
+						})
+					}
+				}]
+			})
+		})
+
+	})
+
+	function getPoint(point, i, a, smoothing) {
+		let cp = (current, previous, next, reverse) => {
+				let p = previous || current,
+					n = next || current,
+					o = {
+						length: Math.sqrt(Math.pow(n[0] - p[0], 2) + Math.pow(n[1] - p[1], 2)),
+						angle: Math.atan2(n[1] - p[1], n[0] - p[0])
+					},
+					angle = o.angle + (reverse ? Math.PI : 0),
+					length = o.length * smoothing;
+				return [current[0] + Math.cos(angle) * length, current[1] + Math.sin(angle) * length];
+			},
+			cps = cp(a[i - 1], a[i - 2], point, false),
+			cpe = cp(point, a[i - 1], a[i + 1], true);
+		return `C ${cps[0]},${cps[1]} ${cpe[0]},${cpe[1]} ${point[0]},${point[1]}`;
+	}
+
+	function getPath(update, smoothing) {
+		let points = [
+				[3.5, 16],
+				[82, update],
+				[160.5, 16]
+			],
+			d = points.reduce((acc, point, i, a) => i === 0 ? `M ${point[0]},${point[1]}` : `${acc} ${getPoint(point, i, a, smoothing)}`, '');
+		return `<path d="${d}" /><path d="${d}" />`;
+	}
+
+</script>
+</html>
