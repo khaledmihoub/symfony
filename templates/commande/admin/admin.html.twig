@@ -1,0 +1,75 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Commandes
+{% endblock %}
+
+{% block navigation %}
+	<li class="breadcrumb-item">
+		<a href="{{ path ('app_dashboard') }}">Home</a>
+	</li>
+	<li class="breadcrumb-item active">List Orders</li>
+{% endblock %}
+
+{% block body %}
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title" style="display: flex; position: absolute;">Commandes list</h5>
+			<button class="justify-content-end" style="display: flex; position: relative; left: 88%; margin-top: 8px; border-radius: 10px;">
+		{#	<a href="{{ path ('admin_add_activite')}}">{#}
+					<i class="bx bxs-plus-square"></i>
+					Add activite</a>
+			</button>
+            <br><br>
+			<table class="table table-hover">
+				<thead>
+
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">User</th>
+						<th scope="col">Etat</th>
+						<th scope="col">Date</th>
+						<th scope="col" colspan="3">Actions</th>
+
+						{# <th scope="col">user_id</th> #}
+					</tr>
+				</thead>
+				<tbody>
+				{% for com in commandes %}
+						<tr>
+							<th>#C{{com.id}}</th>
+							<td>{{ com.userId.nom }}  {{ com.userId.prenom }}</td>
+							<td>	
+                            {% if  com.etat.value == "ENCOURS" %}
+												<span class="badge rounded-pill bg-warning">En cours</span>
+							{%  endif  %}
+							{% if  com.etat.value == "ANNULE" %}
+												<span class="badge rounded-pill bg-danger">Annulé</span>
+							{%  endif  %}
+							{% if  com.etat.value == "LIVRED" %}
+											 <span class="badge rounded-pill bg-success">Livré</span>
+							{%  endif  %}
+                            </td>
+							<td>{{com.date|date("m/d/Y  H:i")  }} </td>
+							<td>
+								<button class="btn">
+									<a href="{{ path ('livred', {id: com.id}) }}">
+										<i class="bx bxs-wrench"></i>  Livred</a>
+								</button>
+							<br>
+								<button class="btn">
+									<a href="{{ path ('pdf', {id: com.id}) }}">
+										<i class="bx bxs-download"></i>  Download</a>
+								</button>
+							<br>
+								<button class="btn">
+								<a href="{{ path ('admin_comdetail', {id: com.id}) }}"><i class="bx bxs-show"></i>  Show</a>
+								</button>
+							</td>
+
+						</tr>
+					{% endfor %} 
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

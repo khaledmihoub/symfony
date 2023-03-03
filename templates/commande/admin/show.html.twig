@@ -1,0 +1,68 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Prduits commandés
+{% endblock %}
+{% block navigation %}
+	<li class="breadcrumb-item">
+		<a href="{{ path ('admin_com') }}">Commandes</a>
+	</li>
+	<li class="breadcrumb-item active">#C{{ lcommandes[0].idCommande.id }}</li>
+{% endblock %}
+{% block body %}
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title">Commande  #C{{ lcommandes[0].idCommande.id }}</h5>
+
+			<!-- Table with hoverable rows -->
+			<table class="table table-bordered">
+				<thead>
+
+					<tr>
+						<th scope="col">Produit</th>
+						<th scope="col">Prix </th>
+						<th scope="col">Quantité</th>
+						<th scope="col">Total</th>
+					
+
+						{# <th scope="col">user_id</th> #}
+					</tr>
+				</thead>
+				  <tbody>
+            {% if lcommandes is not empty %}
+				{% for lc in lcommandes %}
+                                    <tr>
+                                        <td>{{lc.idProduit.nomProduit}}</td>
+                                        <td>{{lc.idProduit.prixTtc}} </td>
+                                        <td>{{lc.quantite}}</td>
+                                         <td>{{lc.quantite * lc.idProduit.prixTtc}}</td>
+                                    </tr>
+                {% endfor %}
+            {% endif %}
+                <tr>
+                    <td colspan="2" class="table-borderless"></td>
+                    <td> 
+                        <strong>Livraison :
+                        </strong>
+                    </td>
+                    <td>
+                        7 
+                    </td>
+                </tr>
+				 <tr >
+                    <td colspan="2"></td>
+                    
+                    <td class="table-active"> 
+                        <strong>Total :
+                        </strong>
+                    </td>
+                    <td class="table-active">
+                      <strong>  {{total}} </strong> TND
+                    </td>
+                </tr>
+                  
+            </tbody>
+			</table>
+		<!-- End Table with hoverable rows -->
+
+	</div>
+</div>{% endblock %}

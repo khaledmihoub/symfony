@@ -25,16 +25,71 @@ use Dompdf\Options;
 #[Route('/commande')]
 class CommandeController extends AbstractController
 {
+
+    #[Route('/admin', name: 'admin_com', methods: ['GET'])]
+    public function adminHome( EntityManagerInterface $entityManager): Response
+    {   
+        
+
+        $Commandes = $entityManager
+                    ->getRepository(Commande::class)
+                    ->findAll(['date' => 'DESC']);
+        
+         
+          
+        return $this->render('commande/admin/admin.html.twig', [
+            'commandes' => $Commandes,
+        ]);
+    }
+
+    #[Route('/admin/detail/{id}', name: 'admin_comdetail', methods: ['GET'])]
+    public function detailCommande(Commande $comm, EntityManagerInterface $entityManager): Response
+    {   
+        $total = 0 ; 
+        $LCommandes = $entityManager
+                    ->getRepository(LigneDeCommande::class)
+                    ->findBy(['id_commande' => $comm]);
+                    foreach ($LCommandes as $l) {
+                        $quantitie= $l->getQuantite();
+                        $prix = $l->getIdProduit()->getPrixTtc();      
+                        $total= $total + $prix * $quantitie;
+                }
+            $total = $total+7; 
+
+        $Commandes = $entityManager
+                    ->getRepository(Commande::class)
+                    ->findAll();
+        $latestCommande = $entityManager
+                    ->getRepository(Commande::class)
+                    ->findOneBy([], ['date' => 'DESC'], 1);
+         
+          
+        return $this->render('commande/admin/show.html.twig', [
+            'lcommandes' => $LCommandes,
+            'total' => $total
+        ]);
+    }
+
+    #[Route('/livred/{id}',  name: 'livred', methods: ['GET'])]
+    public function LivredComande(Commande $comm, EntityManagerInterface $entityManager) : Response
+    {
+        $comm->setEtat(Status::LIVRED);
+        $entityManager->getRepository(Commande::class)->save($comm, true);
+
+         return $this->redirectToRoute('admin_com');
+    }
+
     #[Route('/annule/{id}',  name: 'annule', methods: ['GET'])]
-    public function myCommandeAction(Commande $comm, EntityManagerInterface $entityManager) : Response
+    public function AnnuleCommande(Commande $comm, EntityManagerInterface $entityManager) : Response
     {
         $comm->setEtat(Status::ANNULE);
         $entityManager->getRepository(Commande::class)->save($comm, true);
 
          return $this->redirectToRoute('affc');
     }
+
     #[Route('/pdf/{id}',  name: 'pdf', methods: ['GET'])]
-    public function myPdfAction(Commande $comm, EntityManagerInterface $entityManager) : Response
+    public function pdfDownload(Commande $comm, EntityManagerInterface $entityManager) : Response
     {
         $total = 0 ; 
         $LCommandes = $entityManager
@@ -69,7 +124,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/affcommande', name: 'affc', methods: ['GET'])]
-    public function AffiC(CommandeRepository $commandeRepository,Request $request, EntityManagerInterface $entityManager): Response
+    public function AfficheCommandeUser( EntityManagerInterface $entityManager): Response
     {   
         $user = $entityManager
         ->getRepository(User::class)
@@ -89,19 +144,8 @@ class CommandeController extends AbstractController
     }
 
 
-
-    #[Route('/home33', name: 'ap', methods: ['GET'])]
-    public function index333(CommandeRepository $commandeRepository,Request $request, EntityManagerInterface $entityManager): Response
-    {   
-    
-
-        return $this->render('/commande/datapdf.html.twig', [
-           
-        ]);
-    }
-
     #[Route('/home', name: 'app_commande_index', methods: ['GET'])]
-    public function index(CommandeRepository $commandeRepository,Request $request, EntityManagerInterface $entityManager): Response
+    public function UserHome(Request $request, EntityManagerInterface $entityManager): Response
     {   
         $session = new Session();
         if( empty($session->get('panier'))){
@@ -127,7 +171,7 @@ class CommandeController extends AbstractController
 
 
     #[Route('/panier', name: 'my_route', methods: ['POST'])]
-    public function index2(CommandeRepository $commandeRepository,Request $request,EntityManagerInterface $entityManager): Response
+    public function remplirPanier(Request $request): Response
     { 
         
         //get id produit from hidden form
@@ -154,7 +198,7 @@ class CommandeController extends AbstractController
             return $this->redirectToRoute('panier');
     }
     #[Route('/panier', name: 'panier', methods: ['GET'])]
-    public function panier(CommandeRepository $commandeRepository,Request $request,EntityManagerInterface $entityManager): Response
+    public function AffichePanier(Request $request,EntityManagerInterface $entityManager): Response
     {   
         $session = new Session();
         $produits = array();
@@ -181,7 +225,7 @@ class CommandeController extends AbstractController
 
 
     #[Route('/panier/vider', name: 'viderpanier', methods: ['get'])]
-    public function viderpanier(CommandeRepository $commandeRepository,Request $request,EntityManagerInterface $entityManager): Response
+    public function viderPanier(): Response
     { 
         $session = new Session();
         $session->set('panier', []);
@@ -192,7 +236,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/newcommande', name: 'submitcommande', methods: ['POST'])]
-    public function newcomande(ValidatorInterface $validator,CommandeRepository $commandeRepository,LigneDeCommandeRepository $commandeLRepository,Request $request,EntityManagerInterface $entityManager): Response
+    public function newComandeUser(ValidatorInterface $validator,CommandeRepository $commandeRepository,LigneDeCommandeRepository $commandeLRepository,Request $request,EntityManagerInterface $entityManager): Response
     {       
         //recuperer user statique son id 1 
         $user = $entityManager
