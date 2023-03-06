@@ -406,7 +406,11 @@
 												
 									
 										</td>
-										
+										<td>	{% if  com.code is not null %}
+													{{com.code.valeur}}
+											{%  endif  %}
+										</td>
+									
 										<td>
 											
 											{% if diff < 1 and com.etat.value == "ENCOURS" %}

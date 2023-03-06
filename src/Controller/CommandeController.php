@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Controller;
+
+use App\Entity\Codepromo;
 use App\Entity\Produit;
 use App\Entity\Commande;
 use App\Entity\LigneDeCommande;
 use App\Entity\User;
 use App\Entity\Status;
 use App\Form\CommandeType;
+use App\Repository\CodepromoRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\LigneDeCommandeRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +45,55 @@ class CommandeController extends AbstractController
             'commandes' => $Commandes,
         ]);
     }
+    #[Route('/admin/codes', name: 'admin_code', methods: ['GET'])]
+    public function adminCodeHome( EntityManagerInterface $entityManager, Request $request): Response
+    {   
+        
+        if ($request->query->getBoolean('successdelete')) {
+            $this->addFlash('successdelete', 'Entity added successfully!');
+        }
+        if ($request->query->getBoolean('successadd')) {
+            $this->addFlash('successadd', 'Entity added successfully!');
+        }
+        $codes = $entityManager
+                    ->getRepository(Codepromo::class)
+                    ->findAll(['date' => 'DESC']);
+        
+         
+          
+        return $this->render('commande/admin/codepromo.html.twig', [
+            'codes' => $codes,
+        ]);
+    }
+
+    #[Route('/admin/delete/{id}', name: 'deletecode', methods: ['GET'])]
+    public function deletecode(Codepromo $code, CodepromoRepository $cdrepo): Response
+    {   
+             $cdrepo->remove($code, true);
+          
+        return $this->redirectToRoute('admin_code', ['successdelete' => true], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/admin/addCode', name: 'postcode', methods: ['POST'])]
+    public function AjoutCode(Request $request, CodepromoRepository $cprepo): Response
+    { 
+        
+        //get id produit from hidden form
+        $code = $request->request->get('code');
+        $valeur = $request->request->get('valeur');
+       $time = new \DateTime();
+
+        $cp =new Codepromo();
+        $cp->setCode($code);
+        $cp->setCreatedAt($time);
+        $cp->setValeur($valeur);
+        $cprepo->save($cp,true);
+        
+        return $this->redirectToRoute('admin_code', ['successadd' => true], Response::HTTP_SEE_OTHER);
+    }
+
+
 
     #[Route('/admin/detail/{id}', name: 'admin_comdetail', methods: ['GET'])]
     public function detailCommande(Commande $comm, EntityManagerInterface $entityManager): Response
@@ -150,6 +203,7 @@ class CommandeController extends AbstractController
         $session = new Session();
         if( empty($session->get('panier'))){
             $session->set('panier', []);
+            $session->set('cade', null);
         }   
        
         //get all products frome database 
@@ -202,6 +256,8 @@ class CommandeController extends AbstractController
     {   
         $session = new Session();
         $produits = array();
+        $code=$session->get('code');
+        
        // $bool = false;
         foreach ( $session->get('panier') as $i ){
                 $product =  $entityManager
@@ -213,36 +269,68 @@ class CommandeController extends AbstractController
             $this->addFlash('successE', 'Entity added successfully!');
             
         }
+        if ($request->query->getBoolean('successCode')) {
+            $this->addFlash('successCode', 'Entity added successfully!');
+            
+        }
         if ($request->query->getBoolean('successC')) {
            // $bool = true;
             $this->addFlash('successC', 'Entity added successfully!');
         }
         return $this->render('frontcart.html.twig', [
            'produits' => $produits,
+           'code' =>$code
            //'bo'=>$bool
         ]);
     }
 
-
+   
     #[Route('/panier/vider', name: 'viderpanier', methods: ['get'])]
     public function viderPanier(): Response
     { 
         $session = new Session();
         $session->set('panier', []);
+        $session->set('code',null);
         $produits = array(); 
         return $this->render('frontcart.html.twig', [
            'produits' => $produits,
         ]);
     }
+#[Route('/code', name: 'code', methods: ['POST'])]
+    public function VerifCode(Request $request,EntityManagerInterface $entityManager): Response
+    {   
+        $session = new Session();
+       $codepromo = $request->request->get('codepromo'); 
+        
+           if ( !empty($codepromo)) {
+            
+              $code = $entityManager
+                    ->getRepository(Codepromo::class)
+                    ->findOneByCode($codepromo);
 
+                    if ( !empty($code)) {
+                        $session->set('code',$code);
+                   return $this->redirectToRoute('panier', ['successCode' => true], Response::HTTP_SEE_OTHER);
+                }
+                 
+             }else $code="";
+        return $this->redirectToRoute('panier', ['successCode' => false], Response::HTTP_SEE_OTHER);
+    }
     #[Route('/newcommande', name: 'submitcommande', methods: ['POST'])]
     public function newComandeUser(ValidatorInterface $validator,CommandeRepository $commandeRepository,LigneDeCommandeRepository $commandeLRepository,Request $request,EntityManagerInterface $entityManager): Response
-    {       
+    {     
+        $session = new Session();  
+           $code= $session->get('code');
+           
+         
+          $codea = $entityManager
+          ->getRepository(Codepromo::class)
+          ->find($code->getId());
         //recuperer user statique son id 1 
         $user = $entityManager
         ->getRepository(User::class)
-        ->find(1);
-
+        ->find(1); 
+//dd($user);
         $time = new \DateTime();
 
         $commande = new Commande();
@@ -250,9 +338,17 @@ class CommandeController extends AbstractController
         $commande->setEtat(Status::ENCOURS);
         $commande->setDate($time);
         $commande->setUserId($user);
-        //enregistrer la commande a l la base de donné rempli par time , user, etat
-        $commandeRepository->save($commande, true);
-       
+      
+        if(isset($codea) && !empty($codea)){
+        // dd($code);
+                    $commande->setCode($codea) ;  
+                  //  dd($commande);
+                  $commandeRepository->save($commande, true);     
+                
+        }else {
+            $entityManager->persist($commande);
+                    $entityManager->flush(); 
+        }
         $lastComm = $entityManager
         ->getRepository(Commande::class)
         ->findOneBy([], ['id' => 'DESC']);
@@ -285,29 +381,29 @@ class CommandeController extends AbstractController
                }
             }
         
-        if ($p == 0) {     
-             
+        if ($p == 0) {          
             foreach ($table as $ligne) {
                 foreach ($ligne as $l) {
-                   $quantitie= intval($l['quantity']);
-                   $idp = intval($l['idproduit']);
-    
-                   $produit = $entityManager
-                   ->getRepository(Produit::class)
-                   ->find($idp);
-    
-                    $LC = new LigneDeCommande();
-    
-                    $LC->setIdCommande($lastComm);
-                    $LC->setIdProduit($produit);
-                    $LC->setQuantite($quantitie);
-
-                    $commandeLRepository->save($LC, true);
+                    $quantitie= intval($l['quantity']);
+                    $idp = intval($l['idproduit']);
+        
+                    $produit = $entityManager
+                    ->getRepository(Produit::class)
+                    ->find($idp);
+        
+                        $LC = new LigneDeCommande();
+        
+                        $LC->setIdCommande($lastComm);
+                        $LC->setIdProduit($produit);
+                        $LC->setQuantite($quantitie);
+                        
+                        $commandeLRepository->save($LC, true);
                    }
                 }
             $session = new Session();
             $session->set('panier', []); 
-      return $this->redirectToRoute('panier', ['successC' => true], Response::HTTP_SEE_OTHER);
+            $session->set('code', null); 
+                 return $this->redirectToRoute('panier', ['successC' => true], Response::HTTP_SEE_OTHER);
 
         }else {
             $commandeRepository->remove($lastComm, true);

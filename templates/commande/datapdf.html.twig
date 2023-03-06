@@ -80,12 +80,21 @@
                 </tr>
             </thead>
             <tbody>
+            {% set newtotal = 0 %}
+            {% set remise = 0 %}
             {% if lcommandes is not empty %}
 				{% for lc in lcommandes %}
                                     <tr>
                                         <td>{{lc.idProduit.nomProduit}}</td>
                                         <td>{{lc.idProduit.prixTtc}}</td>
                                         <td>{{lc.quantite}}</td>
+                                        {% if  lc.idCommande.code is not null %}
+                                           
+
+                                              {% set newtotal = (lc.idCommande.code.valeur * total) /100   %}
+                                                {% set remise =   lc.idCommande.code.valeur %}   
+                                            
+                                        {%  endif  %}
                                          <td>{{lc.quantite * lc.idProduit.prixTtc}}</td>
                                     </tr>
                 {% endfor %}
@@ -101,11 +110,27 @@
                         7 TND
                     </td>
                 </tr>
-                  
+                   {% if  newtotal != 0 %}
+                    <tr>
+                    <td></td>
+                    <td></td>
+                    <td> 
+                        <strong>Remise Code promo :
+                        </strong>
+                    </td>
+                    <td>
+                       {{remise}} %
+                    </td>
+                </tr>
+                   {% endif  %}
             </tbody>
         </table>
         <div class="total">
-            <span>Total :</span> {{total}} TND
+        {% if  newtotal !=0  %}
+            <span>Total :</span> {{ total - newtotal}} TND
+            {% else  %}
+             <span>Total :</span> {{total}} TND
+            {% endif  %}
         </div>
     </main>
 </body>

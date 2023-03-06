@@ -1,0 +1,123 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Codes promo
+{% endblock %}
+
+{% block navigation %}
+	<li class="breadcrumb-item">
+		<a href="{{ path ('app_dashboard') }}">Home</a>
+	</li>
+	<li class="breadcrumb-item active">List Codes promo</li>
+{% endblock %}
+
+{% block body %}
+	<div class="card">
+		<div class="card-body">
+
+			{% if app.flashes('successdelete') %}
+											<div class='container'>
+													<div id="success-alert" class="alert alert-danger">
+														Le code promo est supprimé 
+													</div>
+											</div>
+			{% endif %}
+			{% if app.flashes('successadd') %}
+											<div class='container'>
+													<div id="success-alert" class="alert alert-sucsess">
+														Le code promo est ajouté avec succée 
+													</div>
+											</div>
+			{% endif %}
+			<h5 class="card-title" style="display: flex; position: absolute;">Codes promo list</h5>
+		<button class="justify-content-end" style="display: flex; position: relative; left: 86%; margin-top: 8px; border-radius: 10px;" onclick="location.href='{{ path('admin_code') }}'" >
+			<a href="{{ path ('admin_com')}}">
+				
+					Gestion commandes</a>
+			</button>
+			
+				<a href="#" class="social-info add-to-cart-button" style="display: flex; position: relative; left: 86%; margin-top: 8px; border-radius: 20px;"> Add new</a>
+			
+            <br><br>
+			 <br><br>
+			  <br><br>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Code</th>
+						<th scope="col">Date</th>
+						<th scope="col">valeur</th>
+						<th scope="col" colspan="3">Actions</th>
+						{# <th scope="col">user_id</th> #}
+					</tr>
+				</thead>
+				<tbody>
+				{% for code in codes %}
+						<tr>
+							<th>#{{code.id}}</th>
+                            <td>	
+                           {{code.code}}
+                            </td>
+							<td>{{ code.createdAt|date("m/d/Y  H:i") }} </td>
+							<td>	
+                              {{code.valeur }}
+                            </td>
+							
+							<td>
+								<button class="btn">
+									<a href="{{ path ('deletecode', {id: code.id}) }}">
+										<i class="bx bxs-wrench"></i> Delete</a>
+								</button>
+							
+							</td>
+
+						</tr>
+					{% endfor %} 
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToCartModalLabel">  Voulez-vous ajouter un nouveau code promo ? </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+	  	 
+		   <form id="myForm" action="{{ path('postcode') }}" method="POST">
+		   			<br>
+				Code : 	<input type="text" id="code" name="code" >
+					<br>
+				Valeur	<input type="number" id="valeur" name="valeur" >
+      </div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Ajouter</button>
+		</form>
+     {# <form id="myForm" action="{{ path('my_route') }}" method="POST">
+						<input type="hidden" id="myHiddenInput" name="myVariable" value="">
+						<button type="submit" class="btn btn-success">Ajouter au panier</button>
+					</form>#} 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+{% block js %}
+<script src="{{asset('js/vendor/jquery-2.2.4.min.js')}}"></script>
+<script>
+$(document).ready(function() {
+    $('.add-to-cart-button').click(function() {
+	
+		   
+      $('#addToCartModal').modal('show');
+    });
+  });
+
+
+</script>
+			{% endblock %}

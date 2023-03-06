@@ -29,6 +29,13 @@ class Commande
     #[ORM\OneToMany(mappedBy: 'id_commande', targetEntity: LigneDeCommande::class, orphanRemoval: true)]
     private Collection $ligneDeCommandes;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Codepromo $code = null;
+
+   
+
+
+    
     public function __construct()
     {
         $this->ligneDeCommandes = new ArrayCollection();
@@ -103,6 +110,18 @@ class Commande
                 $ligneDeCommande->setIdCommande(null);
             }
         }
+        return $this;
+    }
+
+    public function getCode(): ?Codepromo
+    {
+        return $this->code;
+    }
+
+    public function setCode(?Codepromo $code): self
+    {
+        $this->code = $code;
+
         return $this;
     }
 }

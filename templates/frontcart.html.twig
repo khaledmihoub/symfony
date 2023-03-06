@@ -161,10 +161,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Product</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
+                                <th scope="col">Produit</th>
+                                <th scope="col">Prix</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Totale</th>
                             </tr>
                         </thead>
 					
@@ -200,6 +200,7 @@
 													}, 10000); // 10 seconds
 												</script>
 						{% endif %}
+							
                         <tbody>
 							
 							{% if produits is not empty %}
@@ -228,28 +229,73 @@
 										 <td class="subtotal"></td>
 									</tr>
 									{% endfor %}
+									<tr>
+												<td>
+													<a class="btn" href="{{ path('viderpanier') }} ">Vider le panier</a>
+												</td>
+												<td></td>
+												<td>
+													<h5>Subtotal</h5>
+												</td>
+												<td id="total">
+													<h5>  </h5>
+												</td>
+                          		  </tr>
+								  {% if code is not null  %}
+								  <tr>
+												<td>
+													
+												</td>
+												<td></td>
+												<td>
+													<h5>Promo</h5>
+												</td>
+												<td >
+													<h5 style = "color:green;">{{code.valeur}} % </h5>
+												</td>
+                          		  </tr>
+								   {% endif  %}
+									<tr>
+										<td>
+											
+										</td><td></td><td></td>
+										<td>	
 											<button type="submit" class="btn btn-success">Confirmer la commande</button>
-									</form>
+										</td></form>
+											
+									</tr>
+									<tr>
+									<form id="myForm" action="{{ path('code') }}" method="POST">
+									<td></td>
+									<td>{% if attribute(app.request.query.all(), 'successCode') is defined and app.request.query.get('successCode') == 0 %}
+
+											
+													<div  style="color:red;">
+														Code promo incorrect 
+																	
+													</div>
+																		
+										{% endif %}
+										{% if  app.request.get('successCode')==1 or code is not null %}
+											
+													<div  style="color:green;">
+														Code promo appliqué  
+																	
+													</div>
+																		
+										{% endif %}
+									</td>
+										<td>	<input type="text" name="codepromo" placeholder="Code Promo" ></td>
+											<td>	
+											<button type="submit" class="btn btn-success">Appliquer</button>
+											</td>
+											</form>
+									</tr>
 									
 							{% else %}
-								Panier est vide
+								Votre Panier est vide
 							{% endif %}                     
-                            <tr>
-							
-							
-                                <td>
-   									<a class="btn" href="{{ path('viderpanier') }} ">Vider le panier</a>
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                    <h5>Subtotal</h5>
-                                </td>
-                                <td id="total">
-                                    <h5>  </h5>
-                                </td>
-                            </tr>
+                            
 							<!--
 									<tr class="shipping_area">
 										<td>
@@ -286,17 +332,11 @@
 										</td>
 									</tr>
 							-->
-                            <tr class="out_button_area">
-							
-                                <td>
-
-								
+                            <tr class="out_button_area">			
+                                <td>	
                                     <div class="">
                                       <a class="gray_btn" href="{{ path('affc') }} ">Consulter Mes commandes</a>
                                     </div>
-                                
-										
-						
                                 </td>
                                 <td>
 
@@ -313,7 +353,17 @@
                                 </td>
                             </tr>
                         </tbody>
+						
                     </table>
+					<div class='container'>
+													<div id="success-alert" class="alert alert-warning	">
+														Appliquer ce code promo du mois Février " FEV20233 " 
+																	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+													</div>
+																
+											</div>
                 </div>
             </div>
         </div>
